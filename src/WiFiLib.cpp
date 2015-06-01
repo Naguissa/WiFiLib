@@ -15,11 +15,9 @@
 
 void WiFiLib::reinit() {
   	WiFiLib_DEV.begin(WiFiLib_BAUDS);
-	String m = "AT+CWMODE=";
-	m += mode;
 	send(F("AT+RST"), 2000);
-	send(m, 1000); // configure as access point
-
+	sendPart(F("AT+CWMODE="));
+	send(String(mode), 100);
 	if (mode != '1') { // Configure AP
 		sendPart(F("AT+CWSAP=\""));
 		sendPart(ssid);
@@ -153,6 +151,7 @@ void WiFiLib::wifiLoop() {
 				} else {
 					switch (last->mode) {
 						case 3:// 3 found in any position
+							found = route.indexOf(*last->route) >= 0;
 							break;
 
 						case 2:// 2 ends with
@@ -172,7 +171,7 @@ void WiFiLib::wifiLoop() {
 				if (found) {
 					last->fp(route, ipd);
 					sendPart(F("AT+CIPCLOSE="));
-					send((String) ipd, 100);
+					send(String(ipd, DEC), 100);
 					return;
 				}
 				last = last->next;
@@ -225,10 +224,10 @@ void WiFiLib::sendDataByIPD(const int ipd, const String data) {
 	sendPart(F("AT+CIPSEND="));
 	str = String(ipd, DEC);
 	sendPart(str);
-	sendPart(",");
+	sendPart(F(","));
 	str = String(data.length(), DEC);
 	send(str, 100);
-	send(data, 125, true);
+	send(data, 150, true);
 }
 
 
