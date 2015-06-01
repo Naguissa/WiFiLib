@@ -145,29 +145,29 @@ void WiFiLib::wifiLoop() {
 		if (IPDSteps == 9) { // Request fond, check routes
 			IPDStruct * last = IPDs;
 			bool found = false;
-			while (last != NULL) {
-				if (*last->route == "") {
-					found = true;
-				} else {
-					switch (last->mode) {
-						case 3:// 3 found in any position
-							found = route.indexOf(*last->route) >= 0;
-							break;
+			while (last) {
+				switch (last->mode) {
+					case 4:// 4 Default route
+						found = true;
+						break;
 
-						case 2:// 2 ends with
-							found = route.endsWith(*last->route);
-							break;
+					case 3:// 3 found in any position
+						found = route.indexOf(*last->route) >= 0;
+						break;
 
-						case 1:// 1 starts with
-							found = route.startsWith(*last->route);
-							break;
+					case 2:// 2 ends with
+						found = route.endsWith(*last->route);
+						break;
 
-						case 0:// 0 same string
-						default:
-							found = route.equals(*last->route);
-							break;
-						}
-					}
+					case 1:// 1 starts with
+						found = route.startsWith(*last->route);
+						break;
+
+					case 0:// 0 same string
+					default:
+						found = route.equals(*last->route);
+						break;
+				}
 				if (found) {
 					last->fp(route, ipd);
 					sendPart(F("AT+CIPCLOSE="));
@@ -176,6 +176,8 @@ void WiFiLib::wifiLoop() {
 				}
 				last = last->next;
 			}
+		sendDataByIPD(ipd, F("404 - Not found"));
+		send(String(ipd, DEC), 100);
 		}			
 	}
 }
@@ -186,6 +188,7 @@ void WiFiLib::attachRoute(const String route, void (*fp)(const String, const int
 		IPDs = (IPDStruct *) malloc(sizeof(IPDStruct));
 		last = IPDs;
 	} else {
+		last = IPDs;
 		while (last->next != NULL) {
 			last = last->next;
 		}
