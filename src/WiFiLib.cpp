@@ -23,14 +23,19 @@ void WiFiLib::reinit() {
 		sendPart(ssid);
 		sendPart(F("\",\""));
 		sendPart(pass);
-		send(F("\",1,0"), 200); // Last param, ench: 0 OPEN; 2 WPA_PSK; 3 WPA2_PSK; 4 WPA_WPA2_PSK 
+		send(F("\",1,0"), 500); // Last param, ench: 0 OPEN; 2 WPA_PSK; 3 WPA2_PSK; 4 WPA_WPA2_PSK 
 	}
 	if (mode != '2') { // Configure STA
-		sendPart(F("AT+CJSAP=\""));
-		sendPart(ssid);
-		sendPart(F("\",\""));
-		sendPart(pass);
-		send(F("\""), 200);
+		for(char i = 0; i < 5; i++) {
+			sendPart(F("AT+CWJAP=\""));
+			sendPart(ssid);
+			sendPart(F("\",\""));
+			sendPart(pass);
+			String res = send(F("\""), 10000);
+			if(res.indexOf("OK") >= 0) {
+				break;
+			}
+		}
 	}
 	send(F("AT+CIPMUX=1"), 200); // configure for multiple connections
 	send(F("AT+CIPSERVER=1,80"), 200); // turn on server on port 80
@@ -217,6 +222,7 @@ String WiFiLib::send(const String command, const int timeout, const bool removeN
 			response += c;
 		}
 	}
+// Serial.println(response);
     return response;
 }
 
