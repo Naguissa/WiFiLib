@@ -33,31 +33,47 @@
 
 	class WiFiLib {
 		public:
+			WiFiLib();
 			void reinit();
 			String send(const String, const int, const bool = false);
+			String send(const char[], const int, const bool = false);
+			String send(const int, const int, const bool = false);
+			String send(const char, const int, const bool = false);
 			#define sendPart(s) send(s, 0, true)
+
 			void setMode(const char);
 			void setSSID(const String);
+			void setSSID(const char []);
 			void setPass(const String);
+			void setPass(const char []);
 			String getIPInfo();
 			void attachRoute(const String, void (*)(const String, const int), const char = 0);
-			void sendDataByIPD(const int, const String);
+			void attachRoute(const char[], void (*)(const String, const int), const char = 0);
+			void sendDataByIPD(const int, const String, const int = 150);
+			void sendDataByIPD(const int, const char[], const int = 150);
+			void sendDataByIPD(const int, const char, const int = 75);
+			void sendDataByIPD(const int, const int, const int = 75);
 			void wifiLoop();
 			// Used for setting-up Wifi Module to desired speed.
 			// Remember to change Arduino sketch speed when changing to adapt to new one.
 			void setBaudRate(const String);
+			void clearRoutes();
 
 		private:
 			String buffer;
-			String ssid = "WifiDefault";
-			String pass = "WifiDefault";
+			char *ssid = NULL;
+			char *pass = NULL;
 			char mode = '2'; //1= Sta, 2= AP, 3=both. Sta is a device, AP is a router
-			struct IPDStruct {
-				String * route;
+			typedef struct {
+				char * route;
 				void (* fp)(const String, const int);
 				char mode; // 0 same string, 1 starts with, 2 ends with, 3 found in any position
-				IPDStruct * next;
-			};
-		IPDStruct * IPDs = NULL;
+				void * next;
+			} IPDStruct;
+			IPDStruct * IPDs = NULL;
+			void _clearRoutes(IPDStruct *);
+			String _send_common(const int, const bool);
+			void _sendDataByIPD_common(const int);
+			void * _attachRoute_common();
 	};
 #endif
