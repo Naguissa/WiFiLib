@@ -14,8 +14,8 @@
 
 
 WiFiLib::WiFiLib() {
-	setSSID("watering");
-	setPass("default");
+	setSSID("default");
+	setPass("");
 }
 
 void WiFiLib::reinit() {
