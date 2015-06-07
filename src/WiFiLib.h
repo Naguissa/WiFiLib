@@ -52,7 +52,7 @@
 			void sendDataByIPD(const int, const String, const int = 150);
 			void sendDataByIPD(const int, const char[], const int = 150);
 			void sendDataByIPD(const int, const char, const int = 75);
-			void sendDataByIPD(const int, const int, const int = 75);
+			void sendDataByIPD(const int, const int, const int = 100);
 			void wifiLoop();
 			// Used for setting-up Wifi Module to desired speed.
 			// Remember to change Arduino sketch speed when changing to adapt to new one.

@@ -318,9 +318,8 @@ void WiFiLib::sendDataByIPD(const int ipd, const char data, const int timeout) {
 }
 
 void WiFiLib::sendDataByIPD(const int ipd, const int data, const int timeout) {
-	_sendDataByIPD_common(ipd);
-	send((int) sizeof(data), 100);
-	send(data, timeout, true);
+	String str = String(data);
+	sendDataByIPD(ipd, str, timeout);
 }
 
 
