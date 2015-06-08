@@ -221,6 +221,9 @@ void WiFiLib::wifiLoop() {
 			}
 		sendDataByIPD(ipd, F("404 - Not found"));
 		send(String(ipd, DEC), 100);
+		last->fp(route, ipd);
+		sendPart(F("AT+CIPCLOSE="));
+		send(String(ipd, DEC), 100);
 		}			
 	}
 }
