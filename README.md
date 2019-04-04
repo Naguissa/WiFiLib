@@ -8,7 +8,6 @@ ESP8266 library to manage WiFi operations
 ## How do I get set up? ##
 
  * Get the ZIP.
- * Rename to RTCLib.zip
  * Install library on Arduino
 
  * Optionally you can edit WiFiLib.h to change default values for essid, password or mode (not needed, you can change them using setters).
@@ -44,3 +43,17 @@ Included on example folder, available on Arduino IDE.
  * [Naguissa](https://github.com/Naguissa)
  * http://www.naguissa.com
  * http://www.foroelectro.net
+
+
+## Contribute ##
+
+Any code contribution, report or comment are always welcome. Don't hesitate to use GitHub for that.
+
+
+You can make a donation via PayPal: https://paypal.me/foroelectro
+
+
+Thanks for your support.
+
+
+Contributors hall of fame: https://www.foroelectro.net/hall-of-fame-f32/contributors-contribuyentes-t271.html
